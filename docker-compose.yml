@@ -1,0 +1,36 @@
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-user-db
+    environment:
+      POSTGRES_DB: user-service-db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  java-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: java-user-service
+    stdin_open: true
+    tty: true
+    attach: true
+    depends_on:
+      - postgres-db
+    volumes:
+      - ./docker-logs:/app/logs
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

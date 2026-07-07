@@ -1,13 +1,13 @@
-package dao.impl;
+package userService.dao.impl;
 
-import entity.User;
+import userService.entity.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import dao.UserDao;
-import util.HibernateUtil;
+import userService.dao.UserDao;
+import userService.util.HibernateUtil;
 
 import java.util.List;
 

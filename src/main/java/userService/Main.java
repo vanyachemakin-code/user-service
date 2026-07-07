@@ -1,8 +1,10 @@
-import entity.User;
+package userService;
+
+import userService.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import service.UserService;
-import util.HibernateUtil;
+import userService.service.UserService;
+import userService.util.HibernateUtil;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +16,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        logger.info("Приложение user-service запущено.");
+        logger.info("Приложение user-userService.service запущено.");
 
         try {
             while (true) {
@@ -85,6 +87,7 @@ public class Main {
         User user = userService.findById(id);
         if (user != null) {
             logger.info("Пользователь с ID: {}, найден.", id);
+            logger.info("Данные о Пользователе: {}", user);
         } else {
             logger.warn("Пользователь с ID: {}, не существует в системе!", id);
         }

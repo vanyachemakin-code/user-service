@@ -1,6 +1,6 @@
-package dao;
+package userService.dao;
 
-import entity.User;
+import userService.entity.User;
 
 import java.util.List;
 

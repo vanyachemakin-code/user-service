@@ -1,8 +1,8 @@
-package service;
+package userService.service;
 
-import dao.UserDao;
-import dao.impl.UserDaoImpl;
-import entity.User;
+import userService.dao.UserDao;
+import userService.dao.impl.UserDaoImpl;
+import userService.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

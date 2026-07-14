@@ -1,6 +1,7 @@
 package userService.dao.impl;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import userService.TestDB;
 import userService.dao.UserDao;
@@ -20,6 +21,7 @@ class TestUserDaoImpl extends TestDB {
     }
 
     @Test
+    @DisplayName("При сохранении двух Пользователей с одинаковым email, должна быть ошибка UserValidationException")
     void testSave_ShouldThrowUserValidationException_WhenEmailDuplicated() {
         User user1 = new User("Ivan", "duplicate@example.com", 20);
         User user2 = new User("Nikola", "duplicate@example.com", 30);
@@ -33,6 +35,7 @@ class TestUserDaoImpl extends TestDB {
     }
 
     @Test
+    @DisplayName("При сохранении Пользователя с null полем в имени, должна быть ошибка UserValidationException")
     void testSave_ShouldThrowUserValidationException_WhenNameIsNull() {
         User userWithNullName = new User(null, "nullname@example.com", 25);
 
@@ -40,11 +43,13 @@ class TestUserDaoImpl extends TestDB {
     }
 
     @Test
+    @DisplayName("При поиске не существующего Пользователя по ID, должна быть ошибка UserNotFoundException")
     void testFindById_ShouldThrowUserNotFoundException_WhenUserDoesNotExist() {
         assertThrows(UserNotFoundException.class, () -> userDao.findById(999L));
     }
 
     @Test
+    @DisplayName("После сохранении Пользователя, должна быть возможность найти его по ID")
     void testSaveAndFindById() {
         User user = new User("Ivan", "ivan@example.com", 29);
         userDao.save(user);
@@ -55,6 +60,7 @@ class TestUserDaoImpl extends TestDB {
     }
 
     @Test
+    @DisplayName("После сохранения двух Пользователей, БД должна вернуть список из двух объектов")
     void testFindAll() {
         userDao.save(new User("Ivan", "ivan@example.com", 20));
         userDao.save(new User("Nikola", "nikola@example.com", 21));
@@ -64,6 +70,7 @@ class TestUserDaoImpl extends TestDB {
     }
 
     @Test
+    @DisplayName("Тест обновдения данных в БД")
     void testUpdate() {
         User user = new User("Nikola", "nikola@example.com", 40);
         userDao.save(user);
@@ -76,6 +83,7 @@ class TestUserDaoImpl extends TestDB {
     }
 
     @Test
+    @DisplayName("Тест удаления Пользователя по ID")
     void testDeleteById() {
         User user = new User("Ivan", "ivan@example.com", 18);
         userDao.save(user);

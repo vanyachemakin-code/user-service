@@ -1,5 +1,6 @@
 package userService.service;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +24,7 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
+    @DisplayName("При сохранении Пользователя должен сработать метод save()")
     void testSave_ShouldInvokeDaoSave() {
         User user = new User("Ivan", "ivan@example.com", 25);
 
@@ -31,6 +33,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Поиск Пользователя по ID, должен вернуть объект User")
     void testFindById_ShouldReturnUser() {
         Long userId = 1L;
         User expectedUser = new User("Nikola", "nikola@example.com", 30);
@@ -46,6 +49,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("При вызове метода findAll(), должен вернуться список из двух объектов")
     void testFindAll_ShouldReturnList() {
         List<User> expectedList = List.of(
                 new User("Ivan", "ivan@example.com", 22),
@@ -60,6 +64,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("При вызове метода update(), должны обновиться данные")
     void testUpdate_ShouldInvokeDaoUpdate() {
         User user = new User("Nikola", "nikola@example.com", 28);
         user.setId(1L);
@@ -69,6 +74,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Пользователь делжен быть удален по ID, при вызове метода deleteById()")
     void testDeleteById_ShouldInvokeDaoDelete() {
         Long userId = 1L;
 

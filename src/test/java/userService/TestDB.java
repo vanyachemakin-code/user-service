@@ -6,34 +6,39 @@ import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import userService.entity.User;
 import userService.util.HibernateUtil;
 
+@Testcontainers
 public abstract class TestDB {
+
+    @Container
+    protected static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
+            .withDatabaseName("test-user-service-db")
+            .withUsername("test_admin")
+            .withPassword("test_admin");
 
     protected static SessionFactory testSessionFactory;
 
     @BeforeAll
     static void beforeAll() {
-        try {
-            Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration();
 
-            configuration.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
-            configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL");
-            configuration.setProperty("hibernate.connection.username", "test");
-            configuration.setProperty("hibernate.connection.password", "test");
-            configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-            configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-            configuration.setProperty("hibernate.show_sql", "false");
+        configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
+        configuration.setProperty("hibernate.connection.url", postgres.getJdbcUrl());
+        configuration.setProperty("hibernate.connection.username", postgres.getUsername());
+        configuration.setProperty("hibernate.connection.password", postgres.getPassword());
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        configuration.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        configuration.setProperty("hibernate.show_sql", "false");
 
-            configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(User.class);
 
-            testSessionFactory = configuration.buildSessionFactory();
-
-            HibernateUtil.setSessionFactory(testSessionFactory);
-        } catch (Exception e) {
-            throw new RuntimeException("Не удалось инициализировать тестовую базу данных H2", e);
-        }
+        testSessionFactory = configuration.buildSessionFactory();
+        HibernateUtil.setSessionFactory(testSessionFactory);
     }
 
     @BeforeEach

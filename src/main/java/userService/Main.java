@@ -3,6 +3,7 @@ package userService;
 import userService.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import userService.exception.GlobalExceptionHandler;
 import userService.service.UserService;
 import userService.util.HibernateUtil;
 
@@ -46,7 +47,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     logger.warn("Ошибка ввода! Введите цифру.");
                 } catch (Exception e) {
-                    logger.error("Непредвиденная ошибка при выполнении операции!", e);
+                    GlobalExceptionHandler.handler(e);
                 }
             }
         } finally {
@@ -85,12 +86,8 @@ public class Main {
         Long id = readLongInput();
 
         User user = userService.findById(id);
-        if (user != null) {
-            logger.info("Пользователь с ID: {}, найден.", id);
-            logger.info("Данные о Пользователе: {}", user);
-        } else {
-            logger.warn("Пользователь с ID: {}, не существует в системе!", id);
-        }
+        logger.info("Пользователь с ID: {}, найден.", id);
+        logger.info("Данные о Пользователе: {}", user);
     }
 
     private static void findAllUsers() {
@@ -108,10 +105,6 @@ public class Main {
         Long id = readLongInput();
 
         User user = userService.findById(id);
-        if (user == null) {
-            logger.warn("Обновление отменено! Пользователь с ID: {}, не найден.", id);
-            return;
-        }
 
         System.out.print("Новое имя: \n(введите Enter для пропуска)");
         String name = scanner.nextLine();

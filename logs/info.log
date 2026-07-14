@@ -1,0 +1,40 @@
+2026-07-14 20:56:32.723 [main] INFO  userService.service.UserService - Сохранение Пользователя: Ivan...
+2026-07-14 20:56:32.736 [main] INFO  userService.service.UserService - Поиск всех Пользователей в БД...
+2026-07-14 20:56:32.740 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
+2026-07-14 20:56:32.743 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 1...
+2026-07-14 20:56:32.745 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 1...
+2026-07-14 20:56:32.765 [main] INFO  org.testcontainers.images.PullPolicy - Image pull policy will be performed by: DefaultPullPolicy()
+2026-07-14 20:56:32.766 [main] INFO  org.testcontainers.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2026-07-14 20:56:32.847 [main] INFO  org.testcontainers.dockerclient.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2026-07-14 20:56:32.963 [main] INFO  org.testcontainers.dockerclient.DockerClientProviderStrategy - Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2026-07-14 20:56:32.964 [main] INFO  org.testcontainers.DockerClientFactory - Docker host IP address is localhost
+2026-07-14 20:56:32.982 [main] INFO  org.testcontainers.DockerClientFactory - Connected to docker: 
+  Server Version: 28.4.0
+  API Version: 1.51
+  Operating System: Docker Desktop
+  Total Memory: 7837 MB
+2026-07-14 20:56:33.068 [main] INFO  tc.testcontainers/ryuk:0.6.0 - Creating container for image: testcontainers/ryuk:0.6.0
+2026-07-14 20:56:33.211 [main] INFO  org.testcontainers.utility.RegistryAuthLocator - Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+2026-07-14 20:56:33.289 [main] INFO  tc.testcontainers/ryuk:0.6.0 - Container testcontainers/ryuk:0.6.0 is starting: 7d91c7a92d5e8c9f0c969104e100c20f5f1d7fa9cbfdf5f2596d630208293187
+2026-07-14 20:56:33.498 [main] INFO  tc.testcontainers/ryuk:0.6.0 - Container testcontainers/ryuk:0.6.0 started in PT0.429984S
+2026-07-14 20:56:33.500 [main] INFO  org.testcontainers.utility.RyukResourceReaper - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2026-07-14 20:56:33.501 [main] INFO  org.testcontainers.DockerClientFactory - Checking the system...
+2026-07-14 20:56:33.501 [main] INFO  org.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
+2026-07-14 20:56:33.501 [main] INFO  tc.postgres:15-alpine - Creating container for image: postgres:15-alpine
+2026-07-14 20:56:33.530 [main] INFO  tc.postgres:15-alpine - Container postgres:15-alpine is starting: 5ead80a0f0cdcaba5a52a0d3c5b79bc49c25158faa382f819122a35713a51a24
+2026-07-14 20:56:34.339 [main] INFO  tc.postgres:15-alpine - Container postgres:15-alpine started in PT0.837918S
+2026-07-14 20:56:34.340 [main] INFO  tc.postgres:15-alpine - Container is started (JDBC URL: jdbc:postgresql://localhost:52068/test-user-service-db?loggerLevel=OFF)
+2026-07-14 20:56:34.434 [main] WARN  org.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
+2026-07-14 20:56:34.532 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-07-14 20:56:34.818 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
+2026-07-14 20:56:34.818 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - table "users" does not exist, skipping
+2026-07-14 20:56:34.947 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
+2026-07-14 20:56:34.952 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: 23505
+2026-07-14 20:56:34.952 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper - ERROR: duplicate key value violates unique constraint "users_email_key"
+  Подробности: Key (email)=(duplicate@example.com) already exists.
+2026-07-14 20:56:34.979 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
+2026-07-14 20:56:34.981 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Nikola, успешно сохранен в БД
+2026-07-14 20:56:34.999 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
+2026-07-14 20:56:35.012 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Nikola, успешно сохранен в БД
+2026-07-14 20:56:35.022 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь с ID: 6, успешно обновлен.
+2026-07-14 20:56:35.029 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД

@@ -11,7 +11,15 @@ import java.util.List;
 public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-    private final UserDao userDao = new UserDaoImpl();
+    private final UserDao userDao;
+
+    public UserService() {
+        this.userDao = new UserDaoImpl();
+    }
+
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public void save(User user) {
         logger.info("Сохранение Пользователя: {}...", user.getName());

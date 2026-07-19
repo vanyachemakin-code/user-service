@@ -1,15 +1,10 @@
 package userService.dao;
 
-import userService.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import userService.entity.UserEntity;
 
-import java.util.List;
 
-public interface UserDao {
+public interface UserDao extends JpaRepository<UserEntity, Long> {
 
-    void save(User user);
-    User findById(Long id);
-    List<User> findAll();
-    void update(User user);
-    void deleteById(Long id);
-
+    boolean existsByEmail(String email);
 }

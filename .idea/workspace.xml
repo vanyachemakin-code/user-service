@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5780df83-9aed-43db-ba9c-6a99b4abb861" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/common-dto/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-dto/src/main/java/dto/ActionType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-dto/src/main/java/dto/UserNotificationEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/notification/NotificationServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/notification/consumer/KafkaNotificationListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/notification/controller/NotificationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/notification/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/notification/exception/NotificationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/java/notification/service/EmailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/test/java/notification/TestKafkaAndMail.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notification-service/src/test/java/notification/TestNotification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-core/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/error.log" beforeDir="false" afterPath="$PROJECT_DIR$/notification-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/info.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/warn.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/UserServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/UserServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/dao/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/dto/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-dto/src/main/java/dto/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/dto/UserRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/dto/UserRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/dto/UserResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/dto/UserResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/entity/UserEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/exception/UserAppException.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/exception/UserAppException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/exception/UserEmailValidationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/exception/UserEmailValidationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/exception/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/exception/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/userService/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/java/userService/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/userService/controller/TestUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/test/java/userService/controller/TestUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/userService/testDatabase/TestDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-core/src/test/java/userService/testDatabase/TestDB.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Exception" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;vanyachemakin-code&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/vanyachemakin-code/user-service.git&quot;,
+    &quot;accountId&quot;: &quot;2e837569-f431-40aa-8015-672bf5efef25&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="3GmIC9gpA11Dn21JH0AeFTwo9cl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.All in notification-service.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in user-core.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.All in user-service.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestNotification.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestUserController (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestUserController.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in notification-service.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in user-core.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.user-core [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.user-core [install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;notification-service&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/vanyachemakin/Desktop/progects/user-service&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/user-core" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.java in user-core">
+    <configuration name="All in user-service" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="user-service" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestUserController (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="user-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="userService.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="userService.controller" />
+      <option name="MAIN_CLASS_NAME" value="userService.controller.TestUserController" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestUserController" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="user-core" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="userService.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="userService.controller" />
+      <option name="MAIN_CLASS_NAME" value="userService.controller.TestUserController" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in notification-service" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="notification-service" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/notification-service/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in user-core" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="user-core" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/user-core/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.java in user-core" />
+        <item itemvalue="JUnit.TestUserController (1)" />
+        <item itemvalue="JUnit.TestUserController" />
+        <item itemvalue="JUnit.All in user-service" />
+        <item itemvalue="JUnit.java in notification-service" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5780df83-9aed-43db-ba9c-6a99b4abb861" name="Changes" comment="" />
+      <created>1784570187665</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1784570187665</updated>
+    </task>
+    <servers />
+  </component>
+</project>

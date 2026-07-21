@@ -1,0 +1,1 @@
+2026-07-21 03:56:02.487 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] WARN  o.apache.kafka.clients.NetworkClient - [Consumer clientId=consumer-notification-group-1, groupId=notification-group] Error while fetching metadata with correlation id 2 : {user-notifications-topic=LEADER_NOT_AVAILABLE}

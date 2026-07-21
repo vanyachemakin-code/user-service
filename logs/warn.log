@@ -1,7 +1,0 @@
-2026-07-19 03:16:51.157 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-07-19 03:16:51.506 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
-2026-07-19 03:16:51.506 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - constraint "uk_6dotkott2kjsp8vw4d0m25fb7" of relation "users" does not exist, skipping
-2026-07-19 03:16:51.630 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-07-19 03:16:52.247 [main] WARN  u.exception.GlobalExceptionHandler - Ошибка бизнес-валидации: Пользователь с email: duplicate@example.com, уже зарегистрирован!
-2026-07-19 03:16:52.257 [main] WARN  u.exception.GlobalExceptionHandler - Данные не найдены: Пользователь с ID: 999, не найден!
-2026-07-19 03:16:52.300 [main] WARN  u.exception.GlobalExceptionHandler - Ошибка валидации входящего DTO: {name=must not be blank, email=must be a well-formed email address, age=must be greater than 0}!

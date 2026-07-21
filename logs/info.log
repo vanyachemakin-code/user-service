@@ -1,54 +1,80 @@
-2026-07-15 00:17:06.203 [main] INFO  userService.service.UserService - Сохранение Пользователя: Ivan...
-2026-07-15 00:17:06.217 [main] INFO  userService.service.UserService - Поиск всех Пользователей в БД...
-2026-07-15 00:17:06.221 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
-2026-07-15 00:17:06.223 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 1...
-2026-07-15 00:17:06.225 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 1...
-2026-07-15 00:17:06.246 [main] INFO  org.testcontainers.images.PullPolicy - Image pull policy will be performed by: DefaultPullPolicy()
-2026-07-15 00:17:06.247 [main] INFO  org.testcontainers.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
-2026-07-15 00:17:06.341 [main] INFO  org.testcontainers.dockerclient.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
-2026-07-15 00:17:06.651 [main] WARN  org.testcontainers.dockerclient.DockerClientProviderStrategy - DOCKER_HOST unix:///var/run/docker.sock is not listening
-2026-07-15 00:17:06.652 [main] WARN  org.testcontainers.dockerclient.DockerClientProviderStrategy - DOCKER_HOST unix:///Users/vanyachemakin/.docker/run/docker.sock is not listening
-2026-07-15 00:17:06.654 [main] INFO  org.testcontainers.dockerclient.DockerMachineClientProviderStrategy - docker-machine executable was not found on PATH ([/usr/local/bin, /System/Cryptexes/App/usr/bin, /usr/bin, /bin, /usr/sbin, /sbin, /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin, /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin, /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin, /pkg/env/global/bin, /opt/homebrew/bin])
-2026-07-15 00:17:06.654 [main] ERROR org.testcontainers.dockerclient.DockerClientProviderStrategy - Could not find a valid Docker environment. Please check configuration. Attempted configurations were:
-As no valid configuration was found, execution cannot continue.
-See https://java.testcontainers.org/on_failure.html for more details.
-2026-07-15 00:17:21.790 [main] INFO  userService.service.UserService - Сохранение Пользователя: Ivan...
-2026-07-15 00:17:21.807 [main] INFO  userService.service.UserService - Поиск всех Пользователей в БД...
-2026-07-15 00:17:21.811 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
-2026-07-15 00:17:21.814 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 1...
-2026-07-15 00:17:21.817 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 1...
-2026-07-15 00:17:21.841 [main] INFO  org.testcontainers.images.PullPolicy - Image pull policy will be performed by: DefaultPullPolicy()
-2026-07-15 00:17:21.842 [main] INFO  org.testcontainers.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
-2026-07-15 00:17:21.939 [main] INFO  org.testcontainers.dockerclient.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
-2026-07-15 00:17:22.058 [main] INFO  org.testcontainers.dockerclient.DockerClientProviderStrategy - Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
-2026-07-15 00:17:22.058 [main] INFO  org.testcontainers.DockerClientFactory - Docker host IP address is localhost
-2026-07-15 00:17:22.070 [main] INFO  org.testcontainers.DockerClientFactory - Connected to docker: 
-  Server Version: 28.4.0
-  API Version: 1.51
-  Operating System: Docker Desktop
-  Total Memory: 7837 MB
-2026-07-15 00:17:22.156 [main] INFO  tc.testcontainers/ryuk:0.6.0 - Creating container for image: testcontainers/ryuk:0.6.0
-2026-07-15 00:17:22.307 [main] INFO  org.testcontainers.utility.RegistryAuthLocator - Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
-2026-07-15 00:17:22.383 [main] INFO  tc.testcontainers/ryuk:0.6.0 - Container testcontainers/ryuk:0.6.0 is starting: 8b372b3526748c5140bf15002084b3487eefd1760df2f5e9a10901dcaec9a0fd
-2026-07-15 00:17:22.566 [main] INFO  tc.testcontainers/ryuk:0.6.0 - Container testcontainers/ryuk:0.6.0 started in PT0.410056S
-2026-07-15 00:17:22.568 [main] INFO  org.testcontainers.utility.RyukResourceReaper - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
-2026-07-15 00:17:22.569 [main] INFO  org.testcontainers.DockerClientFactory - Checking the system...
-2026-07-15 00:17:22.569 [main] INFO  org.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
-2026-07-15 00:17:22.569 [main] INFO  tc.postgres:15-alpine - Creating container for image: postgres:15-alpine
-2026-07-15 00:17:22.607 [main] INFO  tc.postgres:15-alpine - Container postgres:15-alpine is starting: 9e5292014ddbf22b807673f21e97177bea126aaebec8a0dd9407027032e78981
-2026-07-15 00:17:23.449 [main] INFO  tc.postgres:15-alpine - Container postgres:15-alpine started in PT0.879827S
-2026-07-15 00:17:23.450 [main] INFO  tc.postgres:15-alpine - Container is started (JDBC URL: jdbc:postgresql://localhost:50123/test-user-service-db?loggerLevel=OFF)
-2026-07-15 00:17:23.556 [main] WARN  org.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
-2026-07-15 00:17:23.661 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-07-15 00:17:23.937 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
-2026-07-15 00:17:23.937 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - table "users" does not exist, skipping
-2026-07-15 00:17:24.061 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
-2026-07-15 00:17:24.064 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: 23505
-2026-07-15 00:17:24.065 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper - ERROR: duplicate key value violates unique constraint "users_email_key"
-  Подробности: Key (email)=(duplicate@example.com) already exists.
-2026-07-15 00:17:24.089 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
-2026-07-15 00:17:24.090 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Nikola, успешно сохранен в БД
-2026-07-15 00:17:24.107 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
-2026-07-15 00:17:24.118 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Nikola, успешно сохранен в БД
-2026-07-15 00:17:24.123 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь с ID: 6, успешно обновлен.
-2026-07-15 00:17:24.128 [main] INFO  userService.dao.impl.UserDaoImpl - Пользователь: Ivan, успешно сохранен в БД
+2026-07-19 03:16:50.332 [main] INFO  u.controller.TestUserController - Starting TestUserController using Java 17.0.16 with PID 5216 (started by vanyachemakin in /Users/vanyachemakin/Desktop/progects/user-service)
+2026-07-19 03:16:50.333 [main] INFO  u.controller.TestUserController - No active profile set, falling back to 1 default profile: "default"
+2026-07-19 03:16:50.614 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-19 03:16:50.633 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16 ms. Found 1 JPA repository interface.
+2026-07-19 03:16:50.833 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
+2026-07-19 03:16:50.838 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
+2026-07-19 03:16:50.838 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-19 03:16:50.838 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-07-19 03:16:50.872 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-07-19 03:16:50.872 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 534 ms
+2026-07-19 03:16:51.045 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-19 03:16:51.056 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-19 03:16:51.140 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@47c356e
+2026-07-19 03:16:51.141 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-19 03:16:51.508 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-19 03:16:51.782 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring TestDispatcherServlet ''
+2026-07-19 03:16:51.782 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-07-19 03:16:51.783 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-07-19 03:16:51.799 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
+2026-07-19 03:16:51.805 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 54231 (http) with context path ''
+2026-07-19 03:16:51.810 [main] INFO  u.controller.TestUserController - Started TestUserController in 1.619 seconds (process running for 3.632)
+2026-07-19 03:16:52.142 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
+2026-07-19 03:16:52.236 [main] INFO  userService.service.UserService - Сохранение Пользователя: Петр...
+2026-07-19 03:16:52.256 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 999...
+2026-07-19 03:16:52.264 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 3...
+2026-07-19 03:16:52.266 [main] INFO  userService.service.UserService - Пользователь с ID: 3, успешно удален.
+2026-07-19 03:16:52.311 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 4...
+2026-07-19 03:16:52.312 [main] INFO  userService.service.UserService - Пользователь с ID: 4, успешно обновлен.
+2026-07-19 03:16:52.331 [main] INFO  userService.service.UserService - Поиск всех Пользователей в БД...
+2026-07-19 03:16:52.345 [main] INFO  userService.service.UserService - Сохранение Пользователя: Алексей...
+2026-07-19 03:16:52.348 [main] INFO  userService.service.UserService - Пользователь: Алексей, успешно сохранен в БД
+2026-07-19 03:16:52.585 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-19 03:16:52.587 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-19 03:16:52.589 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-07-21 23:47:13.935 [main] INFO  u.controller.TestUserController - Starting TestUserController using Java 17.0.16 with PID 23189 (started by vanyachemakin in /Users/vanyachemakin/Desktop/progects/user-service)
+2026-07-21 23:47:13.936 [main] INFO  u.controller.TestUserController - No active profile set, falling back to 1 default profile: "default"
+2026-07-21 23:47:14.162 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-21 23:47:14.187 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 21 ms. Found 1 JPA repository interface.
+2026-07-21 23:47:14.401 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 0 (http)
+2026-07-21 23:47:14.406 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-auto-1"]
+2026-07-21 23:47:14.407 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-07-21 23:47:14.407 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-07-21 23:47:14.434 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-07-21 23:47:14.434 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 492 ms
+2026-07-21 23:47:14.607 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-21 23:47:14.620 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-07-21 23:47:14.705 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@41cf4272
+2026-07-21 23:47:14.706 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-07-21 23:47:15.049 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-21 23:47:15.289 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring TestDispatcherServlet ''
+2026-07-21 23:47:15.289 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+2026-07-21 23:47:15.290 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+2026-07-21 23:47:15.304 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-auto-1"]
+2026-07-21 23:47:15.309 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 54049 (http) with context path ''
+2026-07-21 23:47:15.314 [main] INFO  u.controller.TestUserController - Started TestUserController in 1.524 seconds (process running for 3.611)
+2026-07-21 23:47:15.628 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
+2026-07-21 23:47:15.705 [main] INFO  userService.service.UserService - Сохранение Пользователя: Петр...
+2026-07-21 23:47:15.724 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 999...
+2026-07-21 23:47:15.734 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 3...
+2026-07-21 23:47:15.736 [main] INFO  userService.service.UserService - Пользователь с ID: 3, успешно удален.
+2026-07-21 23:47:15.783 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 4...
+2026-07-21 23:47:15.785 [main] INFO  userService.service.UserService - Пользователь с ID: 4, успешно обновлен.
+2026-07-21 23:47:15.800 [main] INFO  userService.service.UserService - Поиск всех Пользователей в БД...
+2026-07-21 23:47:15.813 [main] INFO  userService.service.UserService - Сохранение Пользователя: Алексей...
+2026-07-21 23:47:15.815 [main] INFO  userService.service.UserService - Пользователь: Алексей, успешно сохранен в БД
+2026-07-21 23:47:16.111 [main] INFO  userService.service.UserService - Сохранение Пользователя: Ivan...
+2026-07-21 23:47:16.112 [main] INFO  userService.service.UserService - Пользователь: Ivan, успешно сохранен в БД
+2026-07-21 23:47:16.116 [main] INFO  userService.service.UserService - Поиск всех Пользователей в БД...
+2026-07-21 23:47:16.120 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 1...
+2026-07-21 23:47:16.121 [main] INFO  userService.service.UserService - Пользователь с ID: 1, успешно обновлен.
+2026-07-21 23:47:16.124 [main] INFO  userService.service.UserService - Сохранение Пользователя: Ivan...
+2026-07-21 23:47:16.126 [main] INFO  userService.service.UserService - Обновление данных Пользователя с ID: 1...
+2026-07-21 23:47:16.128 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
+2026-07-21 23:47:16.130 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 1...
+2026-07-21 23:47:16.132 [main] INFO  userService.service.UserService - Поиск Пользователя с ID: 1...
+2026-07-21 23:47:16.134 [main] INFO  userService.service.UserService - Удаление Пользователя с ID: 1...
+2026-07-21 23:47:16.134 [main] INFO  userService.service.UserService - Пользователь с ID: 1, успешно удален.
+2026-07-21 23:47:16.142 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-21 23:47:16.143 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-07-21 23:47:16.146 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

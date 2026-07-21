@@ -1,53 +1,73 @@
 package userService.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import userService.dao.UserDao;
-import userService.dao.impl.UserDaoImpl;
-import userService.entity.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import userService.dto.UserRequestDto;
+import userService.dto.UserResponseDto;
+import userService.entity.UserEntity;
+import userService.exception.UserNotFoundException;
+import userService.exception.UserEmailValidationException;
+import userService.mapper.UserMapper;
 
 import java.util.List;
 
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserDao userDao;
+    private final UserMapper mapper;
 
-    public UserService() {
-        this.userDao = new UserDaoImpl();
+    public void save(UserRequestDto userRequestDto) {
+        log.info("Сохранение Пользователя: {}...", userRequestDto.name());
+
+        if (userDao.existsByEmail(userRequestDto.email())) {
+            throw new UserEmailValidationException(userRequestDto.email());
+        }
+        UserEntity userEntity = mapper.toEntity(userRequestDto);
+        userDao.save(userEntity);
+
+        log.info("Пользователь: {}, успешно сохранен в БД", userRequestDto.name());
     }
 
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
+    public UserResponseDto findById(Long id) {
+        log.info("Поиск Пользователя с ID: {}...", id);
+
+        return userDao.findById(id).map(mapper::toDto).orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    public void save(User user) {
-        logger.info("Сохранение Пользователя: {}...", user.getName());
+    public List<UserResponseDto> findAll() {
+        log.info("Поиск всех Пользователей в БД...");
 
-        userDao.save(user);
+        return userDao.findAll().stream().map(mapper::toDto).toList();
     }
 
-    public User findById(Long id) {
-        logger.info("Поиск Пользователя с ID: {}...", id);
+    @Transactional
+    public UserResponseDto update(Long id, UserRequestDto userRequestDto) {
+        log.info("Обновление данных Пользователя с ID: {}...", id);
 
-        return userDao.findById(id);
+        UserEntity userEntity = userDao.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        userEntity.setName(userRequestDto.name());
+        userEntity.setEmail(userRequestDto.email());
+        userEntity.setAge(userRequestDto.age());
+
+        log.info("Пользователь с ID: {}, успешно обновлен.", id);
+        return mapper.toDto(userEntity);
     }
 
-    public List<User> findAll() {
-        logger.info("Поиск всех Пользователей в БД...");
-
-        return userDao.findAll();
-    }
-
-    public void update(User user) {
-        logger.info("Обновление данных Пользователя с ID: {}...", user.getId());
-
-        userDao.update(user);
-    }
-
+    @Transactional
     public void deleteById(Long id) {
-        logger.info("Удаление Пользователя с ID: {}...", id);
+        log.info("Удаление Пользователя с ID: {}...", id);
 
-        userDao.deleteById(id);
+        UserEntity userEntity = userDao.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+        userDao.delete(userEntity);
+
+        log.info("Пользователь с ID: {}, успешно удален.", id);
     }
 }

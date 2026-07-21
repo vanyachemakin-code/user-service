@@ -1,12 +1,14 @@
-2026-07-15 00:17:06.651 [main] WARN  org.testcontainers.dockerclient.DockerClientProviderStrategy - DOCKER_HOST unix:///var/run/docker.sock is not listening
-2026-07-15 00:17:06.652 [main] WARN  org.testcontainers.dockerclient.DockerClientProviderStrategy - DOCKER_HOST unix:///Users/vanyachemakin/.docker/run/docker.sock is not listening
-2026-07-15 00:17:06.654 [main] ERROR org.testcontainers.dockerclient.DockerClientProviderStrategy - Could not find a valid Docker environment. Please check configuration. Attempted configurations were:
-As no valid configuration was found, execution cannot continue.
-See https://java.testcontainers.org/on_failure.html for more details.
-2026-07-15 00:17:23.556 [main] WARN  org.hibernate.orm.connections.pooling - HHH10001002: Using built-in connection pool (not intended for production use)
-2026-07-15 00:17:23.661 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-07-15 00:17:23.937 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
-2026-07-15 00:17:23.937 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - table "users" does not exist, skipping
-2026-07-15 00:17:24.064 [main] WARN  org.hibernate.engine.jdbc.spi.SqlExceptionHelper - SQL Error: 0, SQLState: 23505
-2026-07-15 00:17:24.065 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper - ERROR: duplicate key value violates unique constraint "users_email_key"
-  Подробности: Key (email)=(duplicate@example.com) already exists.
+2026-07-19 03:16:51.157 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-07-19 03:16:51.506 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
+2026-07-19 03:16:51.506 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - constraint "uk_6dotkott2kjsp8vw4d0m25fb7" of relation "users" does not exist, skipping
+2026-07-19 03:16:51.630 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-19 03:16:52.247 [main] WARN  u.exception.GlobalExceptionHandler - Ошибка бизнес-валидации: Пользователь с email: duplicate@example.com, уже зарегистрирован!
+2026-07-19 03:16:52.257 [main] WARN  u.exception.GlobalExceptionHandler - Данные не найдены: Пользователь с ID: 999, не найден!
+2026-07-19 03:16:52.300 [main] WARN  u.exception.GlobalExceptionHandler - Ошибка валидации входящего DTO: {name=must not be blank, email=must be a well-formed email address, age=must be greater than 0}!
+2026-07-21 23:47:14.721 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-07-21 23:47:15.048 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Warning Code: 0, SQLState: 00000
+2026-07-21 23:47:15.048 [main] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - constraint "uk_6dotkott2kjsp8vw4d0m25fb7" of relation "users" does not exist, skipping
+2026-07-21 23:47:15.164 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-21 23:47:15.715 [main] WARN  u.exception.GlobalExceptionHandler - Ошибка бизнес-валидации: Пользователь с email: duplicate@example.com, уже зарегистрирован!
+2026-07-21 23:47:15.726 [main] WARN  u.exception.GlobalExceptionHandler - Данные не найдены: Пользователь с ID: 999, не найден!
+2026-07-21 23:47:15.774 [main] WARN  u.exception.GlobalExceptionHandler - Ошибка валидации входящего DTO: {name=must not be blank, age=must be greater than 0, email=must be a well-formed email address}!

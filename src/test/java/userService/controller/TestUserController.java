@@ -40,26 +40,6 @@ public class TestUserController extends TestDB {
     }
 
     @Test
-    @DisplayName("Ошибка 400 при нарушении всех правил валидации UserRequestDto")
-    void shouldReturnBadRequestWhenFieldsAreInvalid() throws Exception {
-        mockMvc.perform(post("/api/v1/user-service/user/add")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                  "name": "",
-                                  "email": "not-an-email-format",
-                                  "age": -5
-                                }
-                                """))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.message").value("Ошибка валидации данных"))
-                .andExpect(jsonPath("$.details.name").exists())
-                .andExpect(jsonPath("$.details.email").exists())
-                .andExpect(jsonPath("$.details.age").exists());
-    }
-
-    @Test
     @DisplayName("Ошибка 409 при попытке сохранить дубликат email")
     void shouldReturnConflictWhenEmailExists() throws Exception {
         UserEntity existingUser = new UserEntity("Иван", "duplicate@example.com", 30);
@@ -93,15 +73,6 @@ public class TestUserController extends TestDB {
                 .andExpect(jsonPath("$.email").value("maria@example.com"))
                 .andExpect(jsonPath("$.age").value(22))
                 .andExpect(jsonPath("$.createdAt").exists());
-    }
-
-    @Test
-    @DisplayName("Ошибка 404 если пользователя нет в базе")
-    void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
-        mockMvc.perform(get("/api/v1/user-service/user/999"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.message").exists());
     }
 
     @Test

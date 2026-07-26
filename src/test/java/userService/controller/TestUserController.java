@@ -29,7 +29,7 @@ public class TestUserController extends TestDB {
                                 """))
                 .andExpect(status().isCreated());
 
-        List<UserEntity> users = userDao.findAll();
+        List<UserEntity> users = userRepository.findAll();
         assertThat(users).hasSize(1);
 
         UserEntity savedUser = users.get(0);
@@ -43,7 +43,7 @@ public class TestUserController extends TestDB {
     @DisplayName("Ошибка 409 при попытке сохранить дубликат email")
     void shouldReturnConflictWhenEmailExists() throws Exception {
         UserEntity existingUser = new UserEntity("Иван", "duplicate@example.com", 30);
-        userDao.save(existingUser);
+        userRepository.save(existingUser);
 
         mockMvc.perform(post("/api/v1/user-service/user/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -64,7 +64,7 @@ public class TestUserController extends TestDB {
     @DisplayName("Успешное получение по ID и маппинг в UserResponseDto")
     void shouldGetUserByIdSuccessfully() throws Exception {
         UserEntity user = new UserEntity("Мария", "maria@example.com", 22);
-        UserEntity saved = userDao.save(user);
+        UserEntity saved = userRepository.save(user);
 
         mockMvc.perform(get("/api/v1/user-service/user/" + saved.getId()))
                 .andExpect(status().isOk())
@@ -80,7 +80,7 @@ public class TestUserController extends TestDB {
     void shouldReturnListOfUsers() throws Exception {
         UserEntity user1 = new UserEntity("User1", "u1@ex.com", 18);
         UserEntity user2 = new UserEntity("User2", "u2@ex.com", 19);
-        userDao.saveAll(List.of(user1, user2));
+        userRepository.saveAll(List.of(user1, user2));
 
         mockMvc.perform(get("/api/v1/user-service/user/list"))
                 .andExpect(status().isOk())
@@ -94,7 +94,7 @@ public class TestUserController extends TestDB {
     @DisplayName("Успешное обновление полей в рамках одной транзакции")
     void shouldUpdateUserSuccessfully() throws Exception {
         UserEntity oldUser = new UserEntity("Старое Имя", "old@example.com", 40);
-        UserEntity saved = userDao.save(oldUser);
+        UserEntity saved = userRepository.save(oldUser);
 
         mockMvc.perform(put("/api/v1/user-service/user/" + saved.getId() + "/update")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -110,7 +110,7 @@ public class TestUserController extends TestDB {
                 .andExpect(jsonPath("$.email").value("new@example.com"))
                 .andExpect(jsonPath("$.age").value(41));
 
-        UserEntity updatedInDb = userDao.findById(saved.getId()).orElseThrow();
+        UserEntity updatedInDb = userRepository.findById(saved.getId()).orElseThrow();
         assertThat(updatedInDb.getName()).isEqualTo("Новое Имя");
         assertThat(updatedInDb.getAge()).isEqualTo(41);
     }
@@ -119,11 +119,11 @@ public class TestUserController extends TestDB {
     @DisplayName("Успешное удаление существующего пользователя")
     void shouldDeleteUserSuccessfully() throws Exception {
         UserEntity userToDelete = new UserEntity("Удаляюсь", "delete@example.com", 50);
-        UserEntity saved = userDao.save(userToDelete);
+        UserEntity saved = userRepository.save(userToDelete);
 
         mockMvc.perform(delete("/api/v1/user-service/user/" + saved.getId() + "/delete"))
                 .andExpect(status().isNoContent());
 
-        assertThat(userDao.findById(saved.getId())).isEmpty();
+        assertThat(userRepository.findById(saved.getId())).isEmpty();
     }
 }

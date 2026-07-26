@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import userService.dao.UserDao;
+import userService.repository.UserRepository;
 
 @Testcontainers
 @AutoConfigureMockMvc
@@ -21,13 +21,13 @@ public abstract class TestDB {
     protected static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
 
     @Autowired
-    protected UserDao userDao;
+    protected UserRepository userRepository;
 
     @Autowired
     protected MockMvc mockMvc;
 
     @BeforeEach
     void setUpBase() {
-        userDao.deleteAll();
+        userRepository.deleteAll();
     }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import userService.dao.UserDao;
+import userService.repository.UserRepository;
 import userService.dto.UserRequestDto;
 import userService.dto.UserResponseDto;
 import userService.entity.UserEntity;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 public class TestUserService {
 
     @Mock
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Mock
     private UserMapper userMapper;
@@ -60,43 +60,43 @@ public class TestUserService {
     @Test
     @DisplayName("Сохранение Пользователя с уникальным email")
     void save_shouldSaveUser_whenEmailIsUnique() {
-        when(userDao.existsByEmail(requestDto.email())).thenReturn(false);
+        when(userRepository.existsByEmail(requestDto.email())).thenReturn(false);
         when(userMapper.toEntity(requestDto)).thenReturn(entity);
 
         userService.save(requestDto);
 
-        verify(userDao, times(1)).existsByEmail(requestDto.email());
+        verify(userRepository, times(1)).existsByEmail(requestDto.email());
         verify(userMapper, times(1)).toEntity(requestDto);
-        verify(userDao, times(1)).save(entity);
+        verify(userRepository, times(1)).save(entity);
     }
 
     @Test
     @DisplayName("Выброс ошибки при сохранении Пользователя с не уникальным email")
     void save_shouldThrowUserEmailValidationException_whenEmailAlreadyExists() {
-        when(userDao.existsByEmail(requestDto.email())).thenReturn(true);
+        when(userRepository.existsByEmail(requestDto.email())).thenReturn(true);
 
         assertThrows(UserEmailValidationException.class, () -> userService.save(requestDto));
 
-        verify(userDao, never()).save(any(UserEntity.class));
+        verify(userRepository, never()).save(any(UserEntity.class));
         verify(userMapper, never()).toEntity(any());
     }
 
     @Test
     @DisplayName("Поиск Пользователя по ID")
     void findById_shouldReturnUserResponseDto_whenUserExists() {
-        when(userDao.findById(1L)).thenReturn(Optional.of(entity));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(entity));
         when(userMapper.toDto(entity)).thenReturn(responseDto);
 
         UserResponseDto result = userService.findById(1L);
 
         assertThat(result).isEqualTo(responseDto);
-        verify(userDao, times(1)).findById(1L);
+        verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
     @DisplayName("Выброс ошибки если Пользователь не найден")
     void findById_shouldThrowUserNotFoundException_whenUserDoesNotExist() {
-        when(userDao.findById(anyLong())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.findById(1L));
         verify(userMapper, never()).toDto(any());
@@ -105,20 +105,20 @@ public class TestUserService {
     @Test
     @DisplayName("Поиск всех Пользователей")
     void findAll_shouldReturnListOfUsers_whenUsersExist() {
-        when(userDao.findAll()).thenReturn(List.of(entity));
+        when(userRepository.findAll()).thenReturn(List.of(entity));
         when(userMapper.toDto(entity)).thenReturn(responseDto);
 
         List<UserResponseDto> result = userService.findAll();
 
         assertThat(result).hasSize(1).containsExactly(responseDto);
-        verify(userDao, times(1)).findAll();
+        verify(userRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("Обновление данных Пользователя")
     void update_shouldUpdateAndReturnUser_whenUserExists() {
         UserRequestDto updateRequest = new UserRequestDto("Petr", "petr@example.com", 30);
-        when(userDao.findById(1L)).thenReturn(Optional.of(entity));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(entity));
         when(userMapper.toDto(entity)).thenReturn(responseDto);
 
         UserResponseDto result = userService.update(1L, updateRequest);
@@ -132,7 +132,7 @@ public class TestUserService {
     @Test
     @DisplayName("Если Пользователь не найден при попытке обновить данные, должна выброситься ошибка")
     void update_shouldThrowUserNotFoundException_whenUserDoesNotExist() {
-        when(userDao.findById(anyLong())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.update(1L, requestDto));
         verify(userMapper, never()).toDto(any());
@@ -141,18 +141,18 @@ public class TestUserService {
     @Test
     @DisplayName("Удаление Пользователя")
     void deleteById_shouldDeleteUser_whenUserExists() {
-        when(userDao.findById(1L)).thenReturn(Optional.of(entity));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(entity));
 
         userService.deleteById(1L);
-        verify(userDao, times(1)).delete(entity);
+        verify(userRepository, times(1)).delete(entity);
     }
 
     @Test
     @DisplayName("Ошибка при удалении, если Пользователь не найден")
     void deleteById_shouldThrowUserNotFoundException_whenUserDoesNotExist() {
-        when(userDao.findById(anyLong())).thenReturn(Optional.empty());
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.deleteById(1L));
-        verify(userDao, never()).delete(any(UserEntity.class));
+        verify(userRepository, never()).delete(any(UserEntity.class));
     }
 }

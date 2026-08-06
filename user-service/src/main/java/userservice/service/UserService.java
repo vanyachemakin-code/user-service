@@ -31,14 +31,14 @@ public class UserService {
     private String topicName;
 
     @Transactional
-    public void save(UserRequestDto userRequestDto) {
+    public UserResponseDto save(UserRequestDto userRequestDto) {
         log.info("Сохранение Пользователя: {}...", userRequestDto.name());
 
         if (userRepository.existsByEmail(userRequestDto.email())) {
             throw new UserEmailValidationException(userRequestDto.email());
         }
         UserEntity userEntity = mapper.toEntity(userRequestDto);
-        userRepository.save(userEntity);
+        UserEntity savedUser = userRepository.save(userEntity);
 
         log.info("Отправка Kafka Event...");
         UserNotificationEvent event = new UserNotificationEvent(userRequestDto.email(), ActionType.CREATE);
@@ -46,6 +46,7 @@ public class UserService {
         log.info("Kafka Event успешно отправлен. Отправлено письмо на почту: {}, о регистрации.", userRequestDto.email());
 
         log.info("Пользователь: {}, успешно сохранен в БД", userRequestDto.name());
+        return mapper.toDto(savedUser);
     }
 
     public UserResponseDto findById(Long id) {

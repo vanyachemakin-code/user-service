@@ -46,7 +46,7 @@ public class WebTestUserController {
     }
 
     @Test
-    @DisplayName("Ошибка 404 если пользователя нет в базе")
+    @DisplayName("Ошибка 404 если Пользователя нет в БД")
     void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
         long id = 999L;
         when(userService.findById(id))

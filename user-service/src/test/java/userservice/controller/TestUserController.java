@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TestUserController extends TestDB {
 
     @Test
-    @DisplayName("Успешное создание пользователя")
+    @DisplayName("Успешное создание Пользователя")
     void shouldCreateUserSuccessfully() throws Exception {
         mockMvc.perform(post("/api/v1/user-service/user/add")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -76,7 +76,7 @@ public class TestUserController extends TestDB {
     }
 
     @Test
-    @DisplayName("Успешное получение списка всех пользователей")
+    @DisplayName("Успешное получение списка всех Пользователей")
     void shouldReturnListOfUsers() throws Exception {
         UserEntity user1 = new UserEntity("User1", "u1@ex.com", 18);
         UserEntity user2 = new UserEntity("User2", "u2@ex.com", 19);
@@ -84,10 +84,10 @@ public class TestUserController extends TestDB {
 
         mockMvc.perform(get("/api/v1/user-service/user/list"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("User1"))
-                .andExpect(jsonPath("$[1].name").value("User2"));
+                .andExpect(jsonPath("$._embedded.userResponseDtoList").isArray())
+                .andExpect(jsonPath("$._embedded.userResponseDtoList.length()").value(2))
+                .andExpect(jsonPath("$._embedded.userResponseDtoList[0].name").value("User1"))
+                .andExpect(jsonPath("$._embedded.userResponseDtoList[1].name").value("User2"));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class TestUserController extends TestDB {
     }
 
     @Test
-    @DisplayName("Успешное удаление существующего пользователя")
+    @DisplayName("Успешное удаление существующего Пользователя")
     void shouldDeleteUserSuccessfully() throws Exception {
         UserEntity userToDelete = new UserEntity("Удаляюсь", "delete@example.com", 50);
         UserEntity saved = userRepository.save(userToDelete);

@@ -10,6 +10,5 @@ import userservice.entity.UserEntity;
 public interface UserMapper {
 
     UserEntity toEntity(UserRequestDto userCreateDto);
-
     UserResponseDto toDto(UserEntity userEntity);
 }

@@ -20,6 +20,9 @@
         <module>common-dto</module>
         <module>user-service</module>
         <module>notification-service</module>
+        <module>discovery-server</module>
+        <module>gateway-service</module>
+        <module>config-server</module>
     </modules>
 
     <properties>
@@ -29,6 +32,7 @@
         <lombok.version>1.18.38</lombok.version>
         <testcontainers.version>1.19.7</testcontainers.version>
         <springdoc.version>2.5.0</springdoc.version>
+        <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +51,13 @@
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
                 <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

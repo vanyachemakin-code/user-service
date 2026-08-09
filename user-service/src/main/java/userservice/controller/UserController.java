@@ -57,7 +57,8 @@ public class UserController {
 
     @Operation(summary = "Обновление данных Пользователя по ID.")
     @PutMapping("/user/{id}/update")
-    public ResponseEntity<EntityModel<UserResponseDto>> update(@PathVariable Long id, @Valid @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<EntityModel<UserResponseDto>> update(@PathVariable Long id,
+                                                               @Valid @RequestBody UserRequestDto userRequestDto) {
         UserResponseDto updatedUser = userService.update(id, userRequestDto);
         return ResponseEntity.ok(toResource(updatedUser));
     }

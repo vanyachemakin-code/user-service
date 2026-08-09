@@ -1,13 +1,11 @@
 package userservice.service;
 
 import dto.ActionType;
-import dto.UserNotificationEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import userservice.producer.UserNotificationProducer;
 import userservice.repository.UserRepository;
 import userservice.dto.UserRequestDto;
 import userservice.dto.UserResponseDto;
@@ -25,10 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper mapper;
-    private final KafkaTemplate<String, Object> kafkaTemplate;
-
-    @Value("${app.kafka.topic}")
-    private String topicName;
+    private final UserNotificationProducer notificationProducer;
 
     @Transactional
     public UserResponseDto save(UserRequestDto userRequestDto) {
@@ -40,10 +35,7 @@ public class UserService {
         UserEntity userEntity = mapper.toEntity(userRequestDto);
         UserEntity savedUser = userRepository.save(userEntity);
 
-        log.info("Отправка Kafka Event...");
-        UserNotificationEvent event = new UserNotificationEvent(userRequestDto.email(), ActionType.CREATE);
-        kafkaTemplate.send(topicName, event);
-        log.info("Kafka Event успешно отправлен. Отправлено письмо на почту: {}, о регистрации.", userRequestDto.email());
+        notificationProducer.sendNotificationEvent(userRequestDto.email(), ActionType.CREATE);
 
         log.info("Пользователь: {}, успешно сохранен в БД", userRequestDto.name());
         return mapper.toDto(savedUser);
@@ -86,10 +78,7 @@ public class UserService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userRepository.delete(userEntity);
 
-        log.info("Отправка Kafka Event...");
-        UserNotificationEvent event = new UserNotificationEvent(userEntity.getEmail(), ActionType.DELETE);
-        kafkaTemplate.send(topicName, event);
-        log.info("Kafka Event успешно отправлен. Отправлено письмо на почту: {}, об удалении.", userEntity.getEmail());
+        notificationProducer.sendNotificationEvent(userEntity.getEmail(), ActionType.DELETE);
 
         log.info("Пользователь с ID: {}, успешно удален.", id);
     }

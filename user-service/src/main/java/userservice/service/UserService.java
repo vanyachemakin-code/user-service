@@ -3,9 +3,10 @@ package userservice.service;
 import dto.ActionType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import userservice.producer.UserNotificationProducer;
+import userservice.event.UserInternalEvent;
 import userservice.repository.UserRepository;
 import userservice.dto.UserRequestDto;
 import userservice.dto.UserResponseDto;
@@ -23,7 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper mapper;
-    private final UserNotificationProducer notificationProducer;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public UserResponseDto save(UserRequestDto userRequestDto) {
@@ -35,7 +36,7 @@ public class UserService {
         UserEntity userEntity = mapper.toEntity(userRequestDto);
         UserEntity savedUser = userRepository.save(userEntity);
 
-        notificationProducer.sendNotificationEvent(userRequestDto.email(), ActionType.CREATE);
+        eventPublisher.publishEvent(new UserInternalEvent(userRequestDto.email(), ActionType.CREATE));
 
         log.info("Пользователь: {}, успешно сохранен в БД", userRequestDto.name());
         return mapper.toDto(savedUser);
@@ -78,7 +79,7 @@ public class UserService {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userRepository.delete(userEntity);
 
-        notificationProducer.sendNotificationEvent(userEntity.getEmail(), ActionType.DELETE);
+        eventPublisher.publishEvent(new UserInternalEvent(userEntity.getEmail(), ActionType.DELETE));
 
         log.info("Пользователь с ID: {}, успешно удален.", id);
     }

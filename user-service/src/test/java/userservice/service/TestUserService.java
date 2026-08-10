@@ -10,7 +10,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import userservice.producer.UserNotificationProducer;
+import org.springframework.context.ApplicationEventPublisher;
+import userservice.event.UserInternalEvent;
 import userservice.repository.UserRepository;
 import userservice.dto.UserRequestDto;
 import userservice.dto.UserResponseDto;
@@ -38,10 +39,10 @@ public class TestUserService {
     private UserMapper userMapper;
 
     @Mock
-    private UserNotificationProducer notificationProducer;
+    private ApplicationEventPublisher eventPublisher;
 
     @Captor
-    private ArgumentCaptor<ActionType> typeArgumentCaptor;
+    private ArgumentCaptor<UserInternalEvent> internalEventArgumentCaptor;
 
     @InjectMocks
     private UserService userService;
@@ -71,22 +72,17 @@ public class TestUserService {
         when(userRepository.save(entity)).thenReturn(entity);
         when(userMapper.toDto(entity)).thenReturn(responseDto);
 
-        doNothing().when(notificationProducer).sendNotificationEvent(eq(requestDto.email()), any(ActionType.class));
-
-        UserResponseDto savedUser = userService.save(requestDto);
+        UserResponseDto result = userService.save(requestDto);
 
         verify(userRepository, times(1)).existsByEmail(requestDto.email());
         verify(userMapper, times(1)).toEntity(requestDto);
         verify(userRepository, times(1)).save(entity);
-        verify(userMapper, times(1)).toDto(entity);
+        verify(eventPublisher, times(1)).publishEvent(internalEventArgumentCaptor.capture());
 
-        verify(notificationProducer, times(1))
-                .sendNotificationEvent(eq(requestDto.email()), typeArgumentCaptor.capture());
-
-        assertThat(requestDto.email()).isEqualTo("ivan@example.com");
-        assertThat(typeArgumentCaptor.getValue()).isEqualTo(ActionType.CREATE);
-
-        assertThat(savedUser).isEqualTo(responseDto);
+        UserInternalEvent capturedEvent = internalEventArgumentCaptor.getValue();
+        assertThat(capturedEvent.email()).isEqualTo("ivan@example.com");
+        assertThat(capturedEvent.actionType()).isEqualTo(ActionType.CREATE);
+        assertThat(result).isEqualTo(responseDto);
     }
 
     @Test
@@ -99,24 +95,6 @@ public class TestUserService {
         verify(userRepository, never()).save(any(UserEntity.class));
         verify(userMapper, never()).toEntity(any());
     }
-
-    @Test
-    @DisplayName("Fallback вызывается при ошибке отправки Kafka Event")
-    void save_shouldCallFallback_whenKafkaSendFails() {
-        when(userRepository.existsByEmail(requestDto.email())).thenReturn(false);
-        when(userMapper.toEntity(requestDto)).thenReturn(entity);
-        when(userRepository.save(entity)).thenReturn(entity);
-        when(userMapper.toDto(entity)).thenReturn(responseDto);
-
-        doNothing().when(notificationProducer).sendNotificationEvent(eq(requestDto.email()), any());
-
-        UserResponseDto result = userService.save(requestDto);
-        assertThat(result).isEqualTo(responseDto);
-
-        verify(notificationProducer, times(1))
-                .sendNotificationEvent(eq(requestDto.email()), typeArgumentCaptor.capture());
-
-        assertThat(typeArgumentCaptor.getValue()).isEqualTo(ActionType.CREATE);    }
 
     @Test
     @DisplayName("Поиск Пользователя по ID")
@@ -179,18 +157,15 @@ public class TestUserService {
     @DisplayName("Удаление Пользователя")
     void deleteById_shouldDeleteUser_whenUserExists() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(entity));
-        doNothing().when(notificationProducer).sendNotificationEvent(eq(entity.getEmail()), any(ActionType.class));
 
         userService.deleteById(1L);
 
-        verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).delete(entity);
+        verify(eventPublisher, times(1)).publishEvent(internalEventArgumentCaptor.capture());
 
-        verify(notificationProducer, times(1))
-                .sendNotificationEvent(eq(entity.getEmail()), typeArgumentCaptor.capture());
-
-        assertThat(entity.getEmail()).isEqualTo("ivan@example.com");
-        assertThat(typeArgumentCaptor.getValue()).isEqualTo(ActionType.DELETE);
+        UserInternalEvent capturedEvent = internalEventArgumentCaptor.getValue();
+        assertThat(capturedEvent.email()).isEqualTo("ivan@example.com");
+        assertThat(capturedEvent.actionType()).isEqualTo(ActionType.DELETE);
     }
 
     @Test

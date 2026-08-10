@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -20,8 +19,13 @@ import userservice.repository.UserRepository;
 @Testcontainers
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-@TestPropertySource(properties = "spring.config.import=optional:configserver:")
+@TestPropertySource(properties = {
+        "spring.config.import=optional:configserver:",
+        "app.kafka.topic=user-notifications-topic",
+        "spring.jpa.hibernate.ddl-auto=update",
+        "spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer",
+        "spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer"
+})
 public abstract class TestDB {
 
     @Container

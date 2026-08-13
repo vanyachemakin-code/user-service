@@ -21,6 +21,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       acks: all
       properties:
+        request.timeout.ms: 4000
         delivery.timeout.ms: 5000
 
 app:

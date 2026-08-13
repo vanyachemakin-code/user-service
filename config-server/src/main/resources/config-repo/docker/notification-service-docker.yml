@@ -1,0 +1,18 @@
+spring:
+  kafka:
+    bootstrap-servers: kafka:9092
+  mail:
+    host: mailhog
+    port: 1025
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      smtp:
+        auth: false
+        starttls:
+          enable: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka/

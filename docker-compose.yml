@@ -115,9 +115,12 @@ services:
     ports:
       - "8765:8765"
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka/
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
     depends_on:
       discovery-server:
+        condition: service_healthy
+      config-server:
         condition: service_healthy
       user-service:
         condition: service_started

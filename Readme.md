@@ -25,9 +25,10 @@
                 ┌──────────────────┼──────────────────┐
                 │                  │                  │
       ┌─────────▼────────┐ ┌───────▼────────┐ ┌───────▼────────┐
-      │  Gateway Service │ │  User Service  │ │ Notification   │
-      │  (Spring Cloud   │ │                │ │ Service        │
-      │   Gateway)       │ │                │ │                │
+      │  Gateway Service │ │                │ │                │
+      │  (Spring Cloud   │ │  User Service  │ │  Notification  │
+      │   Gateway +      │ │                │ │     Service    │
+      │  Circuit Breaker)│ │                │ │                │
       └─────────┬────────┘ └─────────┬──────┘ └──────────┬─────┘
                 │                    │                   │
         клиентский трафик        PostgreSQL         Kafka Consumer
@@ -44,8 +45,7 @@
       └────────────────────┘
 ```
 
-Клиент обращается к системе через **Gateway** (`localhost:8765`), который находит нужный сервис через **Eureka** и проксирует запрос. `user-service` при создании/удалении пользователя публикует внутреннее событие, которое **после коммита транзакции** асинхронно отправляется в Kafka. `notification-service` слушает топик и отправляет email-уведомление.
-
+Клиент обращается к системе через **Gateway** (`localhost:8765`), который находит нужный сервис через **Eureka** и проксирует запрос. Каждый маршрут Gateway защищён собственным **Circuit Breaker** — при недоступности `user-service` или `notification-service` клиент получает осмысленный fallback-ответ, а не сырую ошибку проксирования. `user-service` при создании/удалении пользователя публикует внутреннее событие, которое **после коммита транзакции** асинхронно отправляется в Kafka. `notification-service` слушает топик и отправляет email-уведомление.
 ## Модули проекта
 
 | Модуль | Назначение | Порт |
@@ -53,7 +53,7 @@
 | `common-dto` | Общие DTO для обмена сообщениями между сервисами (Kafka-события) | — |
 | `discovery-server` | Service Discovery на базе Netflix Eureka | 8761 |
 | `config-server` | Централизованная конфигурация (Spring Cloud Config, native-профиль) | 8888 |
-| `gateway-service` | API Gateway (Spring Cloud Gateway), маршрутизация через Eureka | 8765 |
+| `gateway-service` | API Gateway (Spring Cloud Gateway), маршрутизация через Eureka, Circuit Breaker на каждый маршрут | 8765 |
 | `user-service` | CRUD пользователей, публикация событий в Kafka | 8080 |
 | `notification-service` | Consumer Kafka-событий, отправка email-уведомлений | 8082 |
 
@@ -78,27 +78,45 @@
 `discovery-server` поднимает Eureka Server. `user-service`, `notification-service` и `gateway-service` регистрируются в нём при старте и обнаруживают друг друга по имени приложения, а не по фиксированному адресу.
 
 ### 2. External Configuration
-`config-server` в native-режиме раздаёт конфигурацию из `config-repo/`. Каждый бизнес-сервис хранит только своё имя и адрес Config Server локально — вся остальная конфигурация (datasource, Kafka, Eureka, Circuit Breaker) приходит централизованно.
-
+`config-server` в native-режиме раздаёт конфигурацию из `config-repo/`. Приложения `user-service`, `notification-service` и `gateway-service` хранят локально только своё имя и адрес Config Server — вся остальная конфигурация (datasource, Kafka, Eureka, маршруты Gateway, пороги Circuit Breaker) приходит централизованно, секреты подставляются через `${VAR:default}`, без хардкода.
+```yaml
+spring:
+  application:
+    name: gateway-service
+  config:
+    import: optional:configserver:http://localhost:8888
+```
 ### 3. API Gateway
 `gateway-service` маршрутизирует запросы через `lb://<service-name>` — реальный адрес инстанса определяется динамически через Eureka, а не хардкодится. Поддерживает `X-Forwarded-*` заголовки (`server.forward-headers-strategy=framework`), поэтому HATEOAS-ссылки в ответах корректно отражают публичный адрес Gateway, а не внутренний адрес backend-сервиса.
 
 ### 4. Circuit Breaker
-Публикация Kafka-события вынесена в `UserNotificationProducer` и защищена Resilience4j:
+**На уровне `user-service`** — публикация Kafka-события вынесена в `UserNotificationProducer` и защищена Resilience4j:
 
 - срабатывает **после коммита транзакции** (`@TransactionalEventListener(phase = AFTER_COMMIT)`) — если сохранение пользователя в БД откатится, событие в Kafka не уйдёт;
 - выполняется асинхронно (`@Async`) — отправка не блокирует HTTP-ответ клиенту;
 - при систематической недоступности Kafka `@CircuitBreaker` переключается на `fallback`-метод, логирующий проблему, вместо падения запроса.
 
+**На уровне `gateway-service`** — каждый маршрут обёрнут собственным Circuit Breaker (reactive-версия Resilience4j):
+
+- при недоступности `user-service` или `notification-service` (таймаут, ошибка соединения, сервис не найден в Eureka) запрос перенаправляется на `fallbackUri`;
+- клиент получает осмысленный `503`-ответ вместо сырой ошибки проксирования.
 ```yaml
 resilience4j:
   circuitbreaker:
     instances:
-      kafkaProducer:
+      kafkaProducer:            # user-service
         sliding-window-size: 5
         failure-rate-threshold: 50
         wait-duration-in-open-state: 10s
         permitted-number-of-calls-in-half-open-state: 3
+      userServiceCircuitBreaker:        # gateway-service
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+      notificationServiceCircuitBreaker: # gateway-service
+        sliding-window-size: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
 ```
 
 ### Дополнительно: Swagger + HATEOAS
@@ -125,7 +143,28 @@ Swagger UI: `http://localhost:8080/swagger-ui.html`
 - Maven
 - Docker (для Testcontainers и реальных Postgres/Kafka)
 
-### Порядок запуска
+## Порядок запуска
+
+Создайте файл `.env` в корне проекта.
+Используйте `.env.example` как шаблон и подставьте свои значения:
+
+```env
+POSTGRES_USER=<ваш логин>
+POSTGRES_PASSWORD=<ваш пароль>
+POSTGRES_DB=<название базы>
+
+MAIL_USERNAME=<логин SMTP>
+MAIL_PASSWORD=<пароль SMTP>
+```
+
+### Шаг 1 — поднять инфраструктуру (Postgres, Kafka, Mailhog)
+
+Для локального запуска (без контейнеризации самих Spring-сервисов) инфраструктура поднимается отдельным compose-файлом:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d
+```
+### Шаг 2 — запустить Spring-сервисы по порядку
 
 Локальный конфиг каждого сервиса указывает на Config Server (`http://localhost:8888`), поэтому порядок важен:
 
@@ -136,17 +175,15 @@ mvn spring-boot:run -pl discovery-server
 # 2. Config Server (после того как Discovery поднялся)
 mvn spring-boot:run -pl config-server
 
-# 3. Postgres и Kafka (реальные, не Testcontainers)
-docker run --name user-service-postgres \
-  -e POSTGRES_USER=<ваш логин> -e POSTGRES_PASSWORD=<ваш пароль> \
-  -e POSTGRES_DB=<название базы> -p 5432:5432 -d postgres:15-alpine
-
-# 4. User Service и Notification Service
+# 3. User Service и Notification Service
 mvn spring-boot:run -pl user-service
 mvn spring-boot:run -pl notification-service
 
-# 5. Gateway Service
+# 4. Gateway Service
 mvn spring-boot:run -pl gateway-service
+
+# Письма можно посмотреть в веб-интерфейсе Mailhog
+open http://localhost:8025
 ```
 
 ### Проверка
@@ -198,14 +235,18 @@ curl -X POST http://localhost:8765/api/v1/user-service/user/add
 
 # Проверить, что письмо дошло (веб-интерфейс Mailhog)
 open http://localhost:8025
+
+# Проверить fallback Gateway — остановить user-service и повторить запрос
+docker compose stop user-service
+curl http://localhost:8765/api/v1/user-service/user/list
+# Ожидается 503 с сообщением из FallbackController, а не сырая ошибка
 ```
 
 Если письмо появилось в Mailhog — подтверждена полная цепочка: Gateway → Eureka → user-service → PostgreSQL → Kafka → notification-service → SMTP.
 
 ### Особенности Docker-окружения
 
-Для контейнерной среды используется отдельный профиль `docker`, подмешивающий адреса сервисов по именам контейнеров (`postgres`, `kafka`, `discovery-server`) вместо `localhost`. Профильные файлы (`user-service-docker.yml`, `notification-service-docker.yml`) лежат в `config-repo/docker/` и активируются через `SPRING_PROFILES_ACTIVE=docker` в `docker-compose.yml`.
-
+Для контейнерной среды используется отдельный профиль `docker`, подмешивающий адреса сервисов по именам контейнеров (`postgres`, `kafka`, `discovery-server`, `config-server`) вместо `localhost`. Профильные файлы (`user-service-docker.yml`, `notification-service-docker.yml`, `gateway-service-docker.yml`) лежат в `config-repo/docker/` и активируются через `SPRING_PROFILES_ACTIVE=docker` в `docker-compose.yml`.
 ## Тестирование
 
 ```bash
@@ -214,13 +255,16 @@ mvn test -pl user-service -am
 
 # Все тесты notification-service (Testcontainers + GreenMail)
 mvn test -pl notification-service -am
+
+# Все тесты gateway-service (WebTestClient)
+mvn test -pl gateway-service -am
 ```
 
 Тесты полностью изолированы от внешнего окружения — не требуют запущенного Config Server или реальных Kafka/Postgres. Ключевые тестовые сценарии:
 
 - CRUD-операции пользователя (`TestUserController`, `TestUserService`)
 - Публикация событий и обработка ошибок Kafka на уровне юнит-тестов (`TestUserNotificationProducer`)
-- Интеграционный тест реального срабатывания Circuit Breaker и fallback через поднятый Spring-контекст (`IntegrationTestUserNotificationProducer`)
+- Интеграционный тест реального срабатывания Circuit Breaker и fallback через поднятый Spring-контекст (`IntegrationTestUserNotificationProducer`, `TestFallbackController`)
 - Consumer-сторона: получение Kafka-события и отправка email (`TestNotificationController`, с проверкой через GreenMail)
 
 ## Структура конфигурации
@@ -231,13 +275,14 @@ config-server/src/main/resources/
 └── config-repo/
     ├── user-service.yml         # конфигурация для локального запуска
     ├── notification-service.yml
+    ├── gateway-service.yml
     └── docker/
         ├── user-service-docker.yml       # переопределения для Docker-сети
-        └── notification-service-docker.yml
+        ├── notification-service-docker.yml
+        └── gateway-service-docker.yml
 ```
 
-Каждый бизнес-сервис хранит в своём `application.yml` только:
-
+Каждый Spring Boot сервис (`user-service`, `notification-service`, `gateway-service`) хранит в своём локальном `application.yml` только имя приложения и адрес Config Server
 ```yaml
 spring:
   application:

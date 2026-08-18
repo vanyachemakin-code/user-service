@@ -1,7 +1,6 @@
 package userservice.service;
 
 import dto.ActionType;
-import dto.UserNotificationEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +10,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.context.ApplicationEventPublisher;
+import userservice.event.UserInternalEvent;
 import userservice.repository.UserRepository;
 import userservice.dto.UserRequestDto;
 import userservice.dto.UserResponseDto;
@@ -28,10 +27,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TestUserService {
@@ -43,10 +39,10 @@ public class TestUserService {
     private UserMapper userMapper;
 
     @Mock
-    private KafkaTemplate<String, Object> kafkaTemplate;
+    private ApplicationEventPublisher eventPublisher;
 
     @Captor
-    private ArgumentCaptor<UserNotificationEvent> eventCaptor;
+    private ArgumentCaptor<UserInternalEvent> internalEventArgumentCaptor;
 
     @InjectMocks
     private UserService userService;
@@ -54,8 +50,6 @@ public class TestUserService {
     private UserEntity entity;
     private UserResponseDto responseDto;
     private UserRequestDto requestDto;
-    private UserNotificationEvent event;
-    private final String testTopic = "user-notifications-topic";
 
     @BeforeEach
     void setUs() {
@@ -68,8 +62,6 @@ public class TestUserService {
 
         responseDto = new UserResponseDto(1L, "Ivan", "ivan@example.com", 25, LocalDateTime.now());
         requestDto = new UserRequestDto("Ivan", "ivan@example.com", 25);
-
-        ReflectionTestUtils.setField(userService, "topicName", testTopic);
     }
 
     @Test
@@ -77,17 +69,20 @@ public class TestUserService {
     void save_shouldSaveUser_whenEmailIsUnique() {
         when(userRepository.existsByEmail(requestDto.email())).thenReturn(false);
         when(userMapper.toEntity(requestDto)).thenReturn(entity);
+        when(userRepository.save(entity)).thenReturn(entity);
+        when(userMapper.toDto(entity)).thenReturn(responseDto);
 
-        userService.save(requestDto);
+        UserResponseDto result = userService.save(requestDto);
 
         verify(userRepository, times(1)).existsByEmail(requestDto.email());
         verify(userMapper, times(1)).toEntity(requestDto);
         verify(userRepository, times(1)).save(entity);
-        verify(kafkaTemplate, times(1)).send(eq(testTopic), eventCaptor.capture());
+        verify(eventPublisher, times(1)).publishEvent(internalEventArgumentCaptor.capture());
 
-        event = eventCaptor.getValue();
-        assertThat(event.email()).isEqualTo("ivan@example.com");
-        assertThat(event.actionType()).isEqualTo(ActionType.CREATE);
+        UserInternalEvent capturedEvent = internalEventArgumentCaptor.getValue();
+        assertThat(capturedEvent.email()).isEqualTo("ivan@example.com");
+        assertThat(capturedEvent.actionType()).isEqualTo(ActionType.CREATE);
+        assertThat(result).isEqualTo(responseDto);
     }
 
     @Test
@@ -164,13 +159,13 @@ public class TestUserService {
         when(userRepository.findById(1L)).thenReturn(Optional.of(entity));
 
         userService.deleteById(1L);
+
         verify(userRepository, times(1)).delete(entity);
-        verify(kafkaTemplate, times(1)).send(eq(testTopic), eventCaptor.capture());
+        verify(eventPublisher, times(1)).publishEvent(internalEventArgumentCaptor.capture());
 
-        event = eventCaptor.getValue();
-        assertThat(event.email()).isEqualTo("ivan@example.com");
-        assertThat(event.actionType()).isEqualTo(ActionType.DELETE);
-
+        UserInternalEvent capturedEvent = internalEventArgumentCaptor.getValue();
+        assertThat(capturedEvent.email()).isEqualTo("ivan@example.com");
+        assertThat(capturedEvent.actionType()).isEqualTo(ActionType.DELETE);
     }
 
     @Test

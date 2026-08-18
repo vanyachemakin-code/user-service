@@ -26,7 +26,7 @@ public class EmailService {
         try {
             sendEmail(event.email(), subject, text);
         } catch (Exception e) {
-            log.error("Не удалось письмо на email: {}! Причина: {}", event.email(), e.getMessage());
+            log.error("Не удалось отправить письмо на email: {}! Причина: {}", event.email(), e.getMessage());
             throw new NotificationException(event.email());
         }
     }
